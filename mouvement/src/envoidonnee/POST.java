@@ -59,7 +59,7 @@ public void envoi(int num)
       
         URL url = null;
         try {
-            url = new URL("http://192.168.0.29/welcome.php?num="+num);
+            url = new URL("http://192.168.1.28/ppe/welcome.php?num="+num); //LOCAL : http://192.168.1.28/ppe/welcome.php?num= EN LIGNE http://128.79.177.130/ppe/welcome.php?num=
         } catch (MalformedURLException ex) {
             Logger.getLogger(POST.class.getName()).log(Level.SEVERE, null, ex);
         }

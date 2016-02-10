@@ -38,132 +38,25 @@ public class JavaCVPrjt01 {
    
    
  
-    static Mat imag = null;
-    static POST send = new POST();
+    
+    
  
     public static void main(String[] args) {
-       
-        JFrame jframe = new JFrame("HUMAN MOTION DETECTOR FPS");
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel vidpanel = new JLabel();
-        jframe.setContentPane(vidpanel);
-        jframe.setSize(640, 480);
-        jframe.setVisible(true);
- 
-        Mat frame = new Mat();
-        Mat outerBox = new Mat();
-        Mat diff_frame = null;
-        Mat tempon_frame = null;
-        ArrayList<Rect> array = new ArrayList<Rect>();
+   
+        //OUVERTURE DES FLUX VIDEOS//
         VideoCapture camera = new VideoCapture(0);
-        Size sz = new Size(640, 480);
-        int i = 0;
-       
+        //VideoCapture camera2 = camera ;
+        ///////////////////////////////
+        AffichageTraitement fenetre = new AffichageTraitement("CAM1",camera,1);
+        AffichageTraitement fenetre2 = new AffichageTraitement("CAM2",camera,3);
+     
+   
  
         while (true) {
-            if (camera.read(frame)) {
-                Imgproc.resize(frame, frame, sz);
-                imag = frame.clone();
-                outerBox = new Mat(frame.size(), CvType.CV_8UC1);
-                Imgproc.cvtColor(frame, outerBox, Imgproc.COLOR_BGR2GRAY);
-                Imgproc.GaussianBlur(outerBox, outerBox, new Size(3, 3), 0);
- 
-                if (i == 0) {
-                    jframe.setSize(frame.width(), frame.height());
-                    diff_frame = new Mat(outerBox.size(), CvType.CV_8UC1);
-                    tempon_frame = new Mat(outerBox.size(), CvType.CV_8UC1);
-                    diff_frame = outerBox.clone();
-                }
- 
-                if (i == 1) {
-                    Core.subtract(outerBox, tempon_frame, diff_frame);
-                    Imgproc.adaptiveThreshold(diff_frame, diff_frame, 255,
-                            Imgproc.ADAPTIVE_THRESH_MEAN_C,
-                            Imgproc.THRESH_BINARY_INV, 5, 2);
-                    array = detection_contours(diff_frame);
-                    if (array.size() > 0) {
- 
-                        Iterator<Rect> it2 = array.iterator();
-                        while (it2.hasNext()) {
-                            Rect obj = it2.next();
-                            Imgproc.rectangle(imag, obj.br(), obj.tl(),
-                                    new Scalar(0, 255, 0), 1);
-                            
-                        }
- 
-                    }
-                }
- 
-                i = 1;
- 
-                ImageIcon image = new ImageIcon(Mat2bufferedImage(imag));
-                vidpanel.setIcon(image);
-                vidpanel.repaint();
-                tempon_frame = outerBox.clone();
- 
-            }
+            fenetre.gestionCamera();
+            fenetre2.gestionCamera();
         }
     }
  
-    public static BufferedImage Mat2bufferedImage(Mat image) {
-        MatOfByte bytemat = new MatOfByte();
-        Imgcodecs.imencode(".jpg", image, bytemat);
-        byte[] bytes = bytemat.toArray();
-        InputStream in = new ByteArrayInputStream(bytes);
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(in);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return img;
-    }
- 
-    public static ArrayList<Rect> detection_contours(Mat outmat) {
-        Mat v = new Mat();
-        Mat vv = outmat.clone();
-        
-        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(vv, contours, v, Imgproc.RETR_LIST,
-                Imgproc.CHAIN_APPROX_SIMPLE);
- 
-        double maxArea = 100;
-        int maxAreaIdx = -1;
-        Rect r = null;
-        ArrayList<Rect> rect_array = new ArrayList<Rect>();
- 
-        for (int idx = 0; idx < contours.size(); idx++) {
-            Mat contour = contours.get(idx);
-            double contourarea = Imgproc.contourArea(contour);
-            if (contourarea > maxArea) {
-                // maxArea = contourarea;
-                maxAreaIdx = idx;
-                r = Imgproc.boundingRect(contours.get(maxAreaIdx));
-                rect_array.add(r);
-                Imgproc.drawContours(imag, contours, maxAreaIdx, new Scalar(0,0, 255));
-            }
- 
-        }
-        int numero_camera = 5;
-     
-        if(rect_array.isEmpty()){
-            System.out.println("vide");
-            
-        }
-        else 
-        {
-    
-            System.out.println("Mouvement détecté");
-            
-            if(send.comptage())
-            {
-            send.envoi(numero_camera);
-            }
-           
-        }
-         v.release();
-        return rect_array;
- 
-    } 
+  
 } 
