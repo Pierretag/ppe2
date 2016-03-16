@@ -47,19 +47,19 @@ public class JavaCVPrjt01 {
         VideoCapture camera1 = new VideoCapture(0);
         VideoCapture camera2 = new VideoCapture(1);
         VideoCapture camera3 = new VideoCapture(2);
-        VideoCapture camera4 = new VideoCapture(3);
+        //VideoCapture camera4 = new VideoCapture(3);
         ///////////////////////////////
         AffichageTraitement fenetre  = new AffichageTraitement("CAM1",camera1,1);
         AffichageTraitement fenetre2 = new AffichageTraitement("CAM2",camera2,2);
         AffichageTraitement fenetre3 = new AffichageTraitement("CAM3",camera3,3);
-        AffichageTraitement fenetre4 = new AffichageTraitement("CAM4",camera4,4);
+     //   AffichageTraitement fenetre4 = new AffichageTraitement("CAM4",camera4,5);
    
  
         while (true) {
             fenetre.gestionCamera();
             fenetre2.gestionCamera();
             fenetre3.gestionCamera();
-            fenetre4.gestionCamera();
+         //   fenetre4.gestionCamera();
         }
     }
  
