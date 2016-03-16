@@ -55,41 +55,17 @@ public boolean comptage()
 public void envoi(int num)
 {
     BufferedReader reader = null;
-   try {
-      
-        URL url = null;
-        try {
-            url = new URL("http://192.168.1.28/ppe/welcome.php?num="+num); //LOCAL : http://192.168.1.28/ppe/welcome.php?num= EN LIGNE http://128.79.177.130/ppe/welcome.php?num=
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(POST.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        URLConnection conn = null;
-        try {
-            conn = url.openConnection();
-        } catch (IOException ex) {
-            Logger.getLogger(POST.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        conn.setDoOutput(true);
-        //OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-        //writer.write("welcome.php?num=6");
-        //writer.flush();
-    String line;
-    reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-    while ((line = reader.readLine()) != null) {
-        System.out.println(line);
-        
-        
+    URL url = null;
+    try {
+        url = new URL("http://128.79.177.130/ppe/welcome.php?num="+num); //LOCAL : http://192.168.1.28/ppe/welcome.php?num= EN LIGNE http://128.79.177.130/ppe/welcome.php?num=
+    } catch (MalformedURLException ex) {
+        Logger.getLogger(POST.class.getName()).log(Level.SEVERE, null, ex);
     }
-    //writer.close();
-    reader.close();
+    URLConnection conn = null;
+    try {
+        conn = url.openConnection();
     } catch (IOException ex) {
         Logger.getLogger(POST.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-        try {
-            reader.close();
-        } catch (IOException ex) {
-            Logger.getLogger(POST.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
 }
